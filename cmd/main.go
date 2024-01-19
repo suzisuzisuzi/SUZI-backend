@@ -21,7 +21,7 @@ func main() {
 	db.ConnectDatabase()
 
 	router.GET("/", Status)
-	router.GET("/user/:firebaseid", auth.GetUserByID)
+	router.GET("/user/:firebaseID", auth.GetUserByID)
 	router.POST("/login", auth.Login)
 	http.ListenAndServe(":8080", router)
 }
