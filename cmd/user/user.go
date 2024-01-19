@@ -1,6 +1,7 @@
 package user
 
 type User struct {
-	ID       string `json:"id" gorm:"primaryKey"`
-	Username string `json:"username"`
+	ID         uint   `json:"id" gorm:"primaryKey"` //id has to be an unsigned integer
+	Username   string `json:"username"`
+	FirebaseID string `json:"firebaseID"`
 }
