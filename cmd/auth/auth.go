@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/fauxriarty/SUZI-backend/cmd/user"
@@ -10,17 +11,16 @@ import (
 )
 
 func GetUserByID(c *gin.Context) {
-	id := c.Param("id")
+	var user user.User
+	firebaseID := c.Param("firebaseID")
+	log.Println(firebaseID)
 
-	var newUser user.User
-	db.DB.First(&newUser, id)
-
-	if newUser.ID >= 0 {
-		c.JSON(http.StatusOK, gin.H{"message": "user found", "user": newUser})
+	if err := db.DB.First(&user, "firebase_id = ?", firebaseID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
 
-	c.JSON(http.StatusNotFound, gin.H{"message": "user not found"})
+	c.JSON(http.StatusOK, user)
 }
 
 func Login(c *gin.Context) {
@@ -29,9 +29,10 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if err := db.DB.Create(&user).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+
+	if err := db.DB.First(&user, "firebaseID = ?", user.FirebaseID).Error; err != nil {
+		db.DB.Create(&user)
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "User saved successfully"})
+
+	c.JSON(http.StatusOK, user)
 }
