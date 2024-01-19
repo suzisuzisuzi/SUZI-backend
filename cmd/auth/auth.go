@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/fauxriarty/SUZI-backend/cmd/user"
@@ -12,8 +11,12 @@ import (
 
 func GetUserByID(c *gin.Context) {
 	var user user.User
-	firebaseID := c.Param("firebaseID")
-	log.Println(firebaseID)
+	firebaseID := c.Param("firebaseID") // this should match the parameter name in the route
+
+	if firebaseID == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Firebase ID is required"})
+		return
+	}
 
 	if err := db.DB.First(&user, "firebase_id = ?", firebaseID).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
