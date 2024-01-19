@@ -2,7 +2,9 @@ package main
 
 import (
 	"net/http"
+
 	"github.com/fauxriarty/SUZI-backend/cmd/auth"
+	"github.com/fauxriarty/SUZI-backend/cmd/db"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,7 +15,11 @@ func Status(c *gin.Context) {
 }
 
 func main() {
+
 	router := gin.Default()
+
+	db.ConnectDatabase()
+
 	router.GET("/", Status)
 	router.GET("/user/:id", auth.GetUserByID)
 	router.POST("/login", auth.Login)
