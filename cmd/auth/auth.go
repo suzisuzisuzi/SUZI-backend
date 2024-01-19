@@ -24,7 +24,14 @@ func GetUserByID(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
-	var newUser user.User
-
-	c.JSON(http.StatusOK, gin.H{"message": "user registered successfully", "user": newUser})
+	var user user.User
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if err := db.DB.Create(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "User saved successfully"})
 }
