@@ -15,7 +15,7 @@ func GetUserByID(c *gin.Context) {
 	var newUser user.User
 	db.DB.First(&newUser, id)
 
-	if newUser.ID != "" {
+	if newUser.ID >= 0 {
 		c.JSON(http.StatusOK, gin.H{"message": "user found", "user": newUser})
 		return
 	}
