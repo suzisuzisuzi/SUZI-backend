@@ -13,10 +13,10 @@ RUN go mod download
 COPY . .
 
 # Step 5: Build the Go app
-RUN go build -o myapp
+RUN cd cmd && go build -o SUZI-Backend
 
 # Step 6: Expose port 8080 to the outside world
 EXPOSE 8080
 
 # Step 7: Run the executable
-CMD ["./myapp"]
+CMD ["./cmd/SUZI-Backend"]
