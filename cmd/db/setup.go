@@ -1,6 +1,7 @@
 package db
 
 import (
+	"github.com/fauxriarty/SUZI-backend/cmd/data"
 	"github.com/fauxriarty/SUZI-backend/cmd/user"
 
 	"gorm.io/driver/postgres"
@@ -16,7 +17,7 @@ func ConnectDatabase() {
 		panic(err)
 	}
 
-	err = db.AutoMigrate(user.User{})
+	err = db.AutoMigrate(user.User{}, data.Datalog{})
 	if err != nil {
 		return
 	}
