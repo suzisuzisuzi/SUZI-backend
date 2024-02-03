@@ -39,5 +39,17 @@ func GetHeatmapData(c *gin.Context) {
 	var datalogs []data.Datalog
 	db.DB.Where("category = ?", category).Find(&datalogs)
 
-	c.JSON(http.StatusOK, datalogs)
+	var geojsons []data.GeoJSON
+	for _, datalog := range datalogs {
+		geojsons = append(geojsons, data.GeoJSON{
+			Type:       "Feature",
+			Properties: datalog,
+			Geometry: data.Geometry{
+				Type:        "Point",
+				Coordinates: []float64{datalog.Longitude, datalog.Latitude},
+			},
+		})
+	}
+
+	c.JSON(http.StatusOK, geojsons)
 }
