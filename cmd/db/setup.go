@@ -11,7 +11,7 @@ import (
 var DB *gorm.DB
 
 func ConnectDatabase() {
-	dsn := "host=aws-0-ap-south-1.pooler.supabase.com user=postgres password=Thepunisintheoven@1 dbname=postgres port=5432"
+	dsn := "host=aws-0-ap-south-1.pooler.supabase.com user=postgres.lqdkfanqochmikddbugv password=Thepunisintheoven@1 dbname=postgres port=5432"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
