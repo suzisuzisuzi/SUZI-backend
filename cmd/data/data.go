@@ -11,6 +11,7 @@ type Datalog struct {
 	Longitude  float64   `json:"longitude"`
 	Altitude   float64   `json:"altitude"`
 	Category   string    `json:"category"`
+	Rating     float64   `json:"rating"`
 }
 
 type GeoJSON struct {
