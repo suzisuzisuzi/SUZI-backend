@@ -51,5 +51,10 @@ func GetHeatmapData(c *gin.Context) {
 		})
 	}
 
-	c.JSON(http.StatusOK, geojsons)
+	featureCollection := data.FeatureCollection{
+		Type:     "FeatureCollection",
+		Features: geojsons,
+	}
+
+	c.JSON(http.StatusOK, featureCollection)
 }
