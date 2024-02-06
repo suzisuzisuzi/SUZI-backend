@@ -17,24 +17,32 @@
     var usgsEarthquakeUrl = 'https://suzi-backend.onrender.com/heatmap/test';
 
     function GetMap() {
-        var map = new Microsoft.Maps.Map('#myMap', {
-            credentials: 'AtKbffNdt4Zk27faCs3cLN2pekMw2zxRutcuhY8Zc2sJEMrkFrL0OtOIbJu3sgko',
-            center: new Microsoft.Maps.Location(34, -118),
-            mapTypeId: Microsoft.Maps.MapTypeId.aerial,
-            zoom: 7 
-        });
+    var map = new Microsoft.Maps.Map('#myMap', {
+        credentials: 'AtKbffNdt4Zk27faCs3cLN2pekMw2zxRutcuhY8Zc2sJEMrkFrL0OtOIbJu3sgko',
+        center: new Microsoft.Maps.Location(34, -118),
+        mapTypeId: Microsoft.Maps.MapTypeId.aerial,
+        zoom: 7 
+    });
 
-        Microsoft.Maps.loadModule(['Microsoft.Maps.GeoJson', 'Microsoft.Maps.HeatMap'], function () {
-            Microsoft.Maps.GeoJson.readFromUrl(usgsEarthquakeUrl, function (shapes) {
-                var heatmap = new Microsoft.Maps.HeatMapLayer(shapes, {
-                    radius: 10000,
-                    unit: 'meters',
-                    opacity: 0.8
-                });
-                map.layers.insert(heatmap);
+    Microsoft.Maps.loadModule(['Microsoft.Maps.GeoJson', 'Microsoft.Maps.HeatMap'], function () {
+        Microsoft.Maps.GeoJson.readFromUrl(usgsEarthquakeUrl, function (layer) {
+            var pushpins = layer.getPrimitives().map(function (primitive) {
+                var location = primitive.getLocation();
+                var pushpin = new Microsoft.Maps.Pushpin(location);
+                pushpin.value = primitive.metadata.properties.rating;
+                return pushpin;
             });
+
+            var heatmap = new Microsoft.Maps.HeatMapLayer(pushpins, {
+                radius: 1000000,
+                unit: 'meters',
+                opacity: 1
+            });
+
+            map.layers.insert(heatmap);
         });
-    }
+    });
+}
     </script>
     
 </head>

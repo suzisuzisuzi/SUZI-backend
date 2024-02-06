@@ -27,6 +27,8 @@ func main() {
 	router.POST("/entries/:firebaseID", handlers.LogEntry)
 	router.GET("/heatmap/:Category", handlers.GetHeatmapData)
 
+	router.GET("/gheatmap/:Category", handlers.GetGheatmapData)
+
 	http.ListenAndServe(":8080", router)
 
 }

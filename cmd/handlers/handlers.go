@@ -58,3 +58,32 @@ func GetHeatmapData(c *gin.Context) {
 
 	c.JSON(http.StatusOK, featureCollection)
 }
+
+type LocationRating struct {
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+	Rating    float64 `json:"rating"`
+}
+
+func GetGheatmapData(c *gin.Context) {
+	category := c.Param("Category")
+
+	if category == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Category is required"})
+		return
+	}
+
+	var datalogs []data.Datalog
+	db.DB.Where("category = ?", category).Find(&datalogs)
+
+	var locationRatings []LocationRating
+	for _, datalog := range datalogs {
+		locationRatings = append(locationRatings, LocationRating{
+			Latitude:  datalog.Latitude,
+			Longitude: datalog.Longitude,
+			Rating:    datalog.Rating,
+		})
+	}
+
+	c.JSON(http.StatusOK, locationRatings)
+}
