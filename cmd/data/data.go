@@ -13,19 +13,3 @@ type Datalog struct {
 	Category   string    `json:"category"`
 	Rating     float64   `json:"rating"`
 }
-
-type GeoJSON struct {
-	Type       string   `json:"type"`
-	Properties Datalog  `json:"properties"`
-	Geometry   Geometry `json:"geometry"`
-}
-
-type Geometry struct {
-	Type        string    `json:"type"`
-	Coordinates []float64 `json:"coordinates"`
-}
-
-type FeatureCollection struct {
-	Type     string    `json:"type"`
-	Features []GeoJSON `json:"features"`
-}

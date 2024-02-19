@@ -1,7 +1,9 @@
 package main
 
 import (
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/fauxriarty/SUZI-backend/cmd/auth"
 	"github.com/fauxriarty/SUZI-backend/cmd/db"
@@ -27,11 +29,19 @@ func main() {
 	router.POST("/login", auth.Login)
 
 	router.POST("/entries/:firebaseID", handlers.LogEntry)
-	router.GET("/heatmap/:Category", handlers.GetHeatmapData)
 
 	router.GET("/gheatmap/:Category", handlers.GetGheatmapData)
 
-	http.ListenAndServe(":8080", router)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+		log.Printf("defaulting to port %s", port)
+	}
+
+	log.Printf("listening on port %s", port)
+	if err := http.ListenAndServe(":"+port, router); err != nil {
+		log.Fatal(err)
+	}
 
 }
 
