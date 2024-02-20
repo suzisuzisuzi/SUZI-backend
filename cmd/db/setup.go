@@ -21,8 +21,8 @@ func ConnectDatabase() {
 	}
 
 	host1 := os.Getenv("DBHOST")
-	user1 := os.Getenv("USER")
-	password1 := os.Getenv("PASSWORD")
+	user1 := os.Getenv("DBUSER")
+	password1 := os.Getenv("DBPASSWORD")
 	dbname1 := os.Getenv("DB")
 	port1 := os.Getenv("DBPORT")
 
